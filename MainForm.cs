@@ -45,7 +45,10 @@ namespace Forms
             int iVab;
             string RecievedData = ((SerialPort)sender).ReadLine();
 
-            textBoxCommunication.Invoke((MethodInvoker) delegate { textBoxCommunication.AppendText("Recieved: " + RecievedData + "\r\n");});
+            if (RecievedData != null)
+            {
+                textBoxCommunication.Invoke((MethodInvoker)delegate { textBoxCommunication.AppendText("Recieved: " + RecievedData + "\r\n"); });
+            }
             string[] separateParts= RecievedData.Split(';');
 
             if (autoMode)
