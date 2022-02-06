@@ -82,10 +82,10 @@
             // 
             // tabs
             // 
+            this.tabs.Controls.Add(this.tabSerial);
             this.tabs.Controls.Add(this.tabstring);
             this.tabs.Controls.Add(this.tabLoops2);
             this.tabs.Controls.Add(this.tabLists);
-            this.tabs.Controls.Add(this.tabSerial);
             this.tabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabs.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.tabs.Location = new System.Drawing.Point(0, 0);
@@ -500,10 +500,13 @@
             this.AcceptButton = this.buttonSend;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(686, 537);
             this.Controls.Add(this.tabs);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
+            this.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabs.ResumeLayout(false);
@@ -546,7 +549,6 @@
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.ListBox listBoxResult;
         private System.Windows.Forms.TextBox textBoxAdd;
-        private System.Windows.Forms.TextBox textBoxCommunication;
         private System.Windows.Forms.TextBox textBoxSend;
         private System.Windows.Forms.Button buttonSend;
         private System.Windows.Forms.Button buttonDisconnect;
@@ -563,6 +565,7 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart chartSeries;
         private System.Windows.Forms.Button buttonConfigWindow;
         public System.IO.Ports.SerialPort serialPort1;
+        public System.Windows.Forms.TextBox textBoxCommunication;
     }
 }
 

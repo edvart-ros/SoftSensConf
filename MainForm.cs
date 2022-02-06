@@ -14,42 +14,53 @@ namespace Forms
 {
     public partial class MainForm : Form
     {
+
+
         bool autoMode = false;
         List<int> analogReading = new List<int>();
         List<DateTime> timeStamp = new List<DateTime>();
-        public string uploadstring = "";
 
 
         public MainForm()
         {
             InitializeComponent();
                 serialPort1.DataReceived += new SerialDataReceivedEventHandler(DataRecievedHandler);
-
                 this.chartSeries.ChartAreas[0].AxisX.LabelStyle.Format = "hh:mm.ss";
                 chartSeries.Series[0].XValueType = ChartValueType.DateTime;
-
                 timer1.Interval = 2000;
                 timer1.Tick += new EventHandler(timer1_Tick);
         }
 
-        
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             serialPort1.WriteLine("readraw");
-
         }
 
         void DataRecievedHandler(object sender, SerialDataReceivedEventArgs e)
         {
             int iVab;
             string RecievedData = ((SerialPort)sender).ReadLine();
-
-            if (RecievedData != null)
-            {
-                textBoxCommunication.Invoke((MethodInvoker)delegate { textBoxCommunication.AppendText("Recieved: " + RecievedData + "\r\n"); });
-            }
+            textBoxCommunication.Invoke((MethodInvoker)delegate 
+            { textBoxCommunication.AppendText("Recieved: " + RecievedData + "\r\n"); });
             string[] separateParts= RecievedData.Split(';');
+
+            if (separateParts.Length == 5)
+            {
+                try
+                {
+                    ConfigForm.configformInstance.textBoxCurrentName.Text = separateParts[0];
+                    ConfigForm.configformInstance.textBoxCurrentLRV.Text = separateParts[1];
+                    ConfigForm.configformInstance.textBoxCurrentURV.Text = separateParts[2];
+                    ConfigForm.configformInstance.textBoxCurrentAlarmL.Text = separateParts[3];
+                    ConfigForm.configformInstance.textBoxCurrentAlarmH.Text = separateParts[4];
+                }
+                catch
+                {
+
+                }
+            }
+
 
             if (autoMode)
             {

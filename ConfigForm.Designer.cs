@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigForm));
             this.txtFile = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.btnOpen = new System.Windows.Forms.Button();
@@ -80,7 +81,7 @@
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(75, 23);
             this.btnOpen.TabIndex = 1;
-            this.btnOpen.Text = "load file";
+            this.btnOpen.Text = "load csv";
             this.btnOpen.UseVisualStyleBackColor = true;
             this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
@@ -107,11 +108,12 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(24, 285);
+            this.button1.BackgroundImage = global::Forms.Properties.Resources.images;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button1.Location = new System.Drawing.Point(166, 10);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(27, 28);
             this.button1.TabIndex = 12;
-            this.button1.Text = "Save config";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.buttonSaveConfig_Click);
             // 
@@ -202,11 +204,12 @@
             // 
             // buttonUpdate
             // 
-            this.buttonUpdate.Location = new System.Drawing.Point(135, 19);
+            this.buttonUpdate.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonUpdate.BackgroundImage")));
+            this.buttonUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonUpdate.Location = new System.Drawing.Point(199, 10);
             this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
+            this.buttonUpdate.Size = new System.Drawing.Size(30, 28);
             this.buttonUpdate.TabIndex = 0;
-            this.buttonUpdate.Text = "update ";
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
@@ -233,11 +236,12 @@
             // 
             // buttonSaveConfig
             // 
-            this.buttonSaveConfig.Location = new System.Drawing.Point(21, 285);
+            this.buttonSaveConfig.BackgroundImage = global::Forms.Properties.Resources.images;
+            this.buttonSaveConfig.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonSaveConfig.Location = new System.Drawing.Point(202, 10);
             this.buttonSaveConfig.Name = "buttonSaveConfig";
-            this.buttonSaveConfig.Size = new System.Drawing.Size(75, 23);
+            this.buttonSaveConfig.Size = new System.Drawing.Size(26, 28);
             this.buttonSaveConfig.TabIndex = 11;
-            this.buttonSaveConfig.Text = "Save config";
             this.buttonSaveConfig.UseVisualStyleBackColor = true;
             this.buttonSaveConfig.Click += new System.EventHandler(this.buttonSaveConfig_Click);
             // 
@@ -323,11 +327,11 @@
             // 
             // buttonSetConfig
             // 
-            this.buttonSetConfig.Location = new System.Drawing.Point(127, 285);
+            this.buttonSetConfig.Location = new System.Drawing.Point(107, 278);
             this.buttonSetConfig.Name = "buttonSetConfig";
-            this.buttonSetConfig.Size = new System.Drawing.Size(85, 23);
+            this.buttonSetConfig.Size = new System.Drawing.Size(114, 34);
             this.buttonSetConfig.TabIndex = 0;
-            this.buttonSetConfig.Text = "upload config";
+            this.buttonSetConfig.Text = "upload to device";
             this.buttonSetConfig.UseVisualStyleBackColor = true;
             this.buttonSetConfig.Click += new System.EventHandler(this.buttonSetConfig_Click);
             // 
@@ -343,6 +347,7 @@
             this.Controls.Add(this.btnOpen);
             this.Controls.Add(this.txtFile);
             this.Name = "ConfigForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.ConfigForm_Load);
             this.groupBoxCurrentConfig.ResumeLayout(false);
             this.groupBoxCurrentConfig.PerformLayout();
@@ -362,11 +367,6 @@
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.GroupBox groupBoxCurrentConfig;
         private System.Windows.Forms.Button buttonUpdate;
-        private System.Windows.Forms.TextBox textBoxCurrentAlarmH;
-        private System.Windows.Forms.TextBox textBoxCurrentAlarmL;
-        private System.Windows.Forms.TextBox textBoxCurrentURV;
-        private System.Windows.Forms.TextBox textBoxCurrentLRV;
-        private System.Windows.Forms.TextBox textBoxCurrentName;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
@@ -388,5 +388,10 @@
         public System.Windows.Forms.TextBox textBoxSetURV;
         public System.Windows.Forms.TextBox textBoxSetLRV;
         public System.Windows.Forms.TextBox textBoxSetName;
+        public System.Windows.Forms.TextBox textBoxCurrentAlarmH;
+        public System.Windows.Forms.TextBox textBoxCurrentAlarmL;
+        public System.Windows.Forms.TextBox textBoxCurrentURV;
+        public System.Windows.Forms.TextBox textBoxCurrentLRV;
+        public System.Windows.Forms.TextBox textBoxCurrentName;
     }
 }
