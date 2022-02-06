@@ -17,7 +17,7 @@ namespace Forms
         bool autoMode = false;
         List<int> analogReading = new List<int>();
         List<DateTime> timeStamp = new List<DateTime>();
-
+        public string uploadstring = "";
 
 
         public MainForm()
@@ -40,8 +40,6 @@ namespace Forms
 
         }
 
-
-
         void DataRecievedHandler(object sender, SerialDataReceivedEventArgs e)
         {
             int iVab;
@@ -56,13 +54,8 @@ namespace Forms
                 {
                     analogReading.Add(iVab);
                     DateTime now = DateTime.Now;
-
                     timeStamp.Add(now);
-
                     chartSeries.Series["Vba"].Points.DataBindXY(timeStamp, analogReading);
-
-                    //chartSeries.Series[0].Points.AddXY(now, analogReading);
-                    
                     chartSeries.Invalidate();
                 }
                 else
@@ -89,17 +82,11 @@ namespace Forms
                 {
                     textBoxResult.Text = "not equal, case sensitive \r\n";
                 }
-
-                // Alphabetic order
-
                 stringCompareResult = string.Compare(string1, string2, false);
-
-                
                 if (stringCompareResult == -1)
                 {
                     textBoxResult.AppendText("not ordered, case sensitive \r\n");
                 }
-
                 else if (stringCompareResult == 0)
                 {
                     textBoxResult.AppendText("ordered, case sensitive \r\n");
@@ -108,8 +95,6 @@ namespace Forms
                 {
                     textBoxResult.AppendText("ordered, case sensitive \r\n");
                 }
-
-
             }
 
 
@@ -124,9 +109,6 @@ namespace Forms
                 {
                     textBoxResult.Text = "not equal, not case sensitive \r\n";
                 }
-
-
-                //Alphabetic order
 
                 stringCompareResult = string.Compare(string1, string2, true);
                 if (stringCompareResult == 1)
@@ -173,10 +155,6 @@ namespace Forms
             }
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -213,20 +191,10 @@ namespace Forms
             comboBox1.Items.RemoveAt(comboBox1.SelectedIndex);
         }
 
-        private void tabLists_Click(object sender, EventArgs e)
-        {
-            /*foreach (string str in listBoxResult.Items)
-            {
-                comboBox1.Items.Add(str);
-            }
-        */
-        }
-
         private void comboBox2_MouseClick(object sender, MouseEventArgs e)
         {
             comboBoxCOM.Items.Clear();
             comboBoxCOM.Items.AddRange(SerialPort.GetPortNames());
-
         }
 
         private void buttonSend_Click(object sender, EventArgs e)
@@ -244,12 +212,10 @@ namespace Forms
 
         private void buttonConnect_Click(object sender, EventArgs e)
         {
-
             if (serialPort1.IsOpen)
             {
                 textBoxCommunication.AppendText("Already connected" + "\r\n" );
             }
-
             else
             {
                 serialPort1.PortName = comboBoxCOM.Text;
@@ -258,7 +224,6 @@ namespace Forms
                 textBoxCommunication.AppendText("connected" + "\r\n");
                 
             }
-            
         }
 
         private void buttonDisconnect_Click(object sender, EventArgs e)
@@ -293,8 +258,9 @@ namespace Forms
 
         private void buttonConfigWindow_Click(object sender, EventArgs e)
         {
-            ConfigForm ConfigForm = new ConfigForm();
+            ConfigForm ConfigForm = new ConfigForm(this);
             ConfigForm.Show();
         }
+
     }
 }

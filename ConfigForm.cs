@@ -8,57 +8,85 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.IO.Ports;
 
 namespace Forms
 {
     public partial class ConfigForm : Form
     {
-        public ConfigForm()
+        MainForm mf;
+        public ConfigForm(MainForm tempform)
         {
             InitializeComponent();
+            mf = tempform;
+
         }
             private void btnOpen_Click(object sender, EventArgs e)
         {
             openFileDialog1.ShowDialog();
             txtFile.Text = openFileDialog1.FileName;
-            BindData(txtFile.Text);
+            LoadData(txtFile.Text);
         }
 
-        private void BindData(string filePath)
+        private void LoadData(string filePath)
         {
             string[] lines = System.IO.File.ReadAllLines(filePath);
-            DataTable dt = new DataTable();
-            DataRow dataRow = dt.NewRow();
-
             string data = lines[0];
+
             if (lines.Length > 0)
             {
                 string[] dataValues = data.Split(',');
-
-                dt.Columns.Add(new DataColumn("command"));
-                dt.Columns.Add(new DataColumn("password"));
-                dt.Columns.Add(new DataColumn("name"));
-                dt.Columns.Add(new DataColumn("lrv"));
-                dt.Columns.Add(new DataColumn("urv"));
-                dt.Columns.Add(new DataColumn("alarmh"));
-
-                dt.Rows.Add(dataRow);
-                dataRow[0] = dataValues[0];
-                dataRow[1] = dataValues[1];
-                dataRow[2] = dataValues[2];
-                dataRow[3] = dataValues[3];
+                textBoxSetName.Text = dataValues[0];
+                textBoxSetLRV.Text = dataValues[1];
+                textBoxSetURV.Text = dataValues[2];
+                textBoxSetAlarmH.Text = dataValues[3];
+                textBoxSetAlarmL.Text = dataValues[4];
                 
 
-
-            }
-            if (dt.Rows.Count > 0)
-            {
-                dataGridView1.DataSource = dt;
             }
 
         }
 
         private void ConfigForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonSetConfig_Click(object sender, EventArgs e)
+        {
+            string uploadstring = ("writeconf>password>" + textBoxSetName.Text + ";" + textBoxSetLRV.Text +";" + textBoxSetURV.Text +";" + textBoxSetAlarmL.Text +";" + textBoxSetAlarmH.Text);
+            mf.serialPort1.WriteLine(uploadstring);
+        }
+
+        private void buttonSaveConfig_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    using (Stream s = File.Open(saveFileDialog1.FileName, FileMode.Create))
+                    using (StreamWriter sw = new StreamWriter(s))
+                    {
+                        string data = textBoxSetName.Text + "," + textBoxSetLRV.Text + "," + textBoxSetURV.Text + "," + textBoxSetAlarmL.Text + "," + textBoxSetAlarmH.Text;
+                        sw.Write(data);
+                    }
+                }
+
+            }
+
+
+            catch (Exception ex)
+            {
+                throw new Exception("u fucked something up", ex);
+            }
+            {
+
+            }
+        }
+
+        private void buttonUpdate_Click(object sender, EventArgs e)
         {
 
         }
