@@ -17,6 +17,8 @@ namespace Forms
 
 
         bool autoMode = false;
+        public bool configformactive = false;
+
         List<int> analogReading = new List<int>();
         List<DateTime> timeStamp = new List<DateTime>();
 
@@ -25,10 +27,11 @@ namespace Forms
         {
             InitializeComponent();
                 serialPort1.DataReceived += new SerialDataReceivedEventHandler(DataRecievedHandler);
-                this.chartSeries.ChartAreas[0].AxisX.LabelStyle.Format = "hh:mm.ss";
-                chartSeries.Series[0].XValueType = ChartValueType.DateTime;
                 timer1.Interval = 2000;
                 timer1.Tick += new EventHandler(timer1_Tick);
+            chartSeries.Series[0].XValueType = ChartValueType.DateTime;
+            chartSeries.ChartAreas[0].AxisX.LabelStyle.Format = "HH-mm-ss";
+
         }
 
 
@@ -41,15 +44,14 @@ namespace Forms
         {
             int iVab;
             string RecievedData = ((SerialPort)sender).ReadLine();
-            textBoxCommunication.Invoke((MethodInvoker)delegate 
-            { textBoxCommunication.AppendText("Recieved: " + RecievedData + "\r\n"); });
+            textBoxCommunication.Invoke((MethodInvoker)delegate{ textBoxCommunication.AppendText("Recieved: " + RecievedData + "\r\n"); });
             string[] separateParts= RecievedData.Split(';');
 
             if (separateParts.Length == 5)
             {
                 try
                 {
-                    ConfigForm.configformInstance.textBoxCurrentName.Text = separateParts[0];
+                    ConfigForm.configformInstance.textBoxCurrentName.Text = separateParts[0]; 
                     ConfigForm.configformInstance.textBoxCurrentLRV.Text = separateParts[1];
                     ConfigForm.configformInstance.textBoxCurrentURV.Text = separateParts[2];
                     ConfigForm.configformInstance.textBoxCurrentAlarmL.Text = separateParts[3];
@@ -66,11 +68,16 @@ namespace Forms
             {
                 if (int.TryParse(separateParts[0], out iVab))
                 {
+                    DateTime dt = DateTime.Now;
+                    
                     analogReading.Add(iVab);
-                    DateTime now = DateTime.Now;
-                    timeStamp.Add(now);
-                    chartSeries.Series["Vba"].Points.DataBindXY(timeStamp, analogReading);
-                    chartSeries.Invalidate();
+                    timeStamp.Add(dt);
+                    BeginInvoke(new Action(() =>
+                    {
+                        chartSeries.Series["Vba"].Points.DataBindXY(timeStamp, analogReading);
+                        chartSeries.Invalidate();
+                    }));
+                    
                 }
                 else
                 {
@@ -247,12 +254,23 @@ namespace Forms
             textBoxCommunication.AppendText("disconnected" + "\r\n");
         }
 
-
         private void buttonManual_Click(object sender, EventArgs e)
         {
             timer1.Stop();
             autoMode = false;
             textBoxSend.ReadOnly = false;
+            buttonConfigWindow.Enabled = true;
+            buttonSend.Enabled = true;
+            buttonConnect.Enabled = true;
+            buttonDisconnect.Enabled = true;
+
+            if (configformactive)
+            {
+                ConfigForm.configformInstance.buttonSetConfig.Enabled = true;
+                ConfigForm.configformInstance.buttonUpdate.Enabled = true;
+            }
+
+            
         }
 
         private void buttonAuto_Click(object sender, EventArgs e)
@@ -263,18 +281,37 @@ namespace Forms
                 textBoxSend.ReadOnly = true;
                 timer1.Start();
                 autoMode=true;
+                buttonConfigWindow.Enabled = false;
+                buttonSend.Enabled = false;
+                buttonConnect.Enabled = false;
+                buttonDisconnect.Enabled = false;
+
+                if (configformactive)
+                {
+                    ConfigForm.configformInstance.buttonSetConfig.Enabled = false;
+                    ConfigForm.configformInstance.buttonUpdate.Enabled = false;
+                }
+                
             }
             else
             {
                 MessageBox.Show("Porten er ikke åpen!");
             }
         }
-
         private void buttonConfigWindow_Click(object sender, EventArgs e)
         {
             ConfigForm ConfigForm = new ConfigForm(this);
+            configformactive = true;
             ConfigForm.Show();
+            
+
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            AboutCommandForm aboutform = new AboutCommandForm();
+
+            aboutform.Show();
+        }
     }
 }

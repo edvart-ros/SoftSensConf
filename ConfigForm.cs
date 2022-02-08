@@ -30,9 +30,18 @@ namespace Forms
 
             private void btnOpen_Click(object sender, EventArgs e)
         {
-            openFileDialog1.ShowDialog();
-            txtFile.Text = openFileDialog1.FileName;
-            LoadData(txtFile.Text);
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                txtFile.Text = openFileDialog1.FileName;
+                LoadData(txtFile.Text);
+            }
+            else
+            {
+                MessageBox.Show(this, "du valgte ingen fil");
+            }
+            
+           
         }
 
         private void LoadData(string filePath)
@@ -85,7 +94,7 @@ namespace Forms
 
             catch (Exception ex)
             {
-                throw new Exception("u fucked something up", ex);
+                throw new Exception("error saving file, please try again", ex);
             }
             {
 
@@ -97,6 +106,9 @@ namespace Forms
             mf.serialPort1.WriteLine("readconf");
         }
 
-
+        private void ConfigForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            mf.configformactive = false;
+        }
     }
 }
