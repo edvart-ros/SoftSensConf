@@ -21,6 +21,7 @@ namespace Forms
 
         List<int> analogReading = new List<int>();
         List<DateTime> timeStamp = new List<DateTime>();
+        Instrument instr = new Instrument();
 
 
         public MainForm()
@@ -56,6 +57,12 @@ namespace Forms
                     ConfigForm.configformInstance.textBoxCurrentURV.Text = separateParts[2];
                     ConfigForm.configformInstance.textBoxCurrentAlarmL.Text = separateParts[3];
                     ConfigForm.configformInstance.textBoxCurrentAlarmH.Text = separateParts[4];
+
+                    instr.tagname = separateParts[0];
+                    instr.lrv = double.Parse(separateParts[1]);
+                    instr.urv = double.Parse(separateParts[2]);
+
+
                 }
                 catch
                 {
@@ -71,6 +78,14 @@ namespace Forms
                     DateTime dt = DateTime.Now;
                     
                     analogReading.Add(iVab);
+                    //OOP implementasjon
+
+                    instr.measurement = iVab;
+                    
+                    
+                    
+                    //
+
                     timeStamp.Add(dt);
                     BeginInvoke(new Action(() =>
                     {
@@ -312,6 +327,26 @@ namespace Forms
             AboutCommandForm aboutform = new AboutCommandForm();
 
             aboutform.Show();
+        }
+
+        private void tabPageClass_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonGetScaled_Click(object sender, EventArgs e)
+        {
+            double scaled_reading = instr.Scaled();
+            textBoxDoubleScaled.Text = scaled_reading.ToString();
+
+        }
+
+        private void buttonUpdateObjectProperties_Click(object sender, EventArgs e)
+        {
+            textBoxClassConfig.Text = instr.tagname + "\r\n";
+            textBoxClassConfig.AppendText(instr.lrv.ToString() + "\r\n");
+            textBoxClassConfig.AppendText(instr.urv.ToString() + "\r\n");
+
         }
     }
 }

@@ -34,6 +34,7 @@
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabSerial = new System.Windows.Forms.TabPage();
+            this.buttonShowCommands = new System.Windows.Forms.Button();
             this.buttonConfigWindow = new System.Windows.Forms.Button();
             this.chartSeries = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.buttonManual = new System.Windows.Forms.Button();
@@ -71,7 +72,11 @@
             this.textBoxAdd = new System.Windows.Forms.TextBox();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.buttonShowCommands = new System.Windows.Forms.Button();
+            this.tabPageClass = new System.Windows.Forms.TabPage();
+            this.textBoxDoubleScaled = new System.Windows.Forms.TextBox();
+            this.textBoxClassConfig = new System.Windows.Forms.TextBox();
+            this.buttonUpdateObjectProperties = new System.Windows.Forms.Button();
+            this.buttonGetScaled = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.tabSerial.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartSeries)).BeginInit();
@@ -79,6 +84,7 @@
             this.tabstring.SuspendLayout();
             this.tabLoops2.SuspendLayout();
             this.tabLists.SuspendLayout();
+            this.tabPageClass.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabs
@@ -87,6 +93,7 @@
             this.tabs.Controls.Add(this.tabstring);
             this.tabs.Controls.Add(this.tabLoops2);
             this.tabs.Controls.Add(this.tabLists);
+            this.tabs.Controls.Add(this.tabPageClass);
             this.tabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabs.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.tabs.Location = new System.Drawing.Point(0, 0);
@@ -122,6 +129,16 @@
             this.tabSerial.TabIndex = 3;
             this.tabSerial.Text = "Serial";
             this.tabSerial.UseVisualStyleBackColor = true;
+            // 
+            // buttonShowCommands
+            // 
+            this.buttonShowCommands.Location = new System.Drawing.Point(222, 55);
+            this.buttonShowCommands.Name = "buttonShowCommands";
+            this.buttonShowCommands.Size = new System.Drawing.Size(25, 23);
+            this.buttonShowCommands.TabIndex = 15;
+            this.buttonShowCommands.Text = "?";
+            this.buttonShowCommands.UseVisualStyleBackColor = true;
+            this.buttonShowCommands.Click += new System.EventHandler(this.button1_Click);
             // 
             // buttonConfigWindow
             // 
@@ -188,7 +205,7 @@
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(111, 28);
+            this.toolStripLabel1.Size = new System.Drawing.Size(111, 22);
             this.toolStripLabel1.Text = "toolStripLabel1";
             // 
             // textBoxCommunication
@@ -494,15 +511,54 @@
             // 
             this.serialPort1.PortName = "COM4";
             // 
-            // buttonShowCommands
+            // tabPageClass
             // 
-            this.buttonShowCommands.Location = new System.Drawing.Point(222, 55);
-            this.buttonShowCommands.Name = "buttonShowCommands";
-            this.buttonShowCommands.Size = new System.Drawing.Size(25, 23);
-            this.buttonShowCommands.TabIndex = 15;
-            this.buttonShowCommands.Text = "?";
-            this.buttonShowCommands.UseVisualStyleBackColor = true;
-            this.buttonShowCommands.Click += new System.EventHandler(this.button1_Click);
+            this.tabPageClass.Controls.Add(this.buttonGetScaled);
+            this.tabPageClass.Controls.Add(this.buttonUpdateObjectProperties);
+            this.tabPageClass.Controls.Add(this.textBoxClassConfig);
+            this.tabPageClass.Controls.Add(this.textBoxDoubleScaled);
+            this.tabPageClass.Location = new System.Drawing.Point(4, 25);
+            this.tabPageClass.Name = "tabPageClass";
+            this.tabPageClass.Size = new System.Drawing.Size(907, 632);
+            this.tabPageClass.TabIndex = 4;
+            this.tabPageClass.Text = "Instrument Class";
+            this.tabPageClass.UseVisualStyleBackColor = true;
+            this.tabPageClass.Click += new System.EventHandler(this.tabPageClass_Click);
+            // 
+            // textBoxDoubleScaled
+            // 
+            this.textBoxDoubleScaled.Location = new System.Drawing.Point(364, 251);
+            this.textBoxDoubleScaled.Name = "textBoxDoubleScaled";
+            this.textBoxDoubleScaled.Size = new System.Drawing.Size(100, 22);
+            this.textBoxDoubleScaled.TabIndex = 0;
+            // 
+            // textBoxClassConfig
+            // 
+            this.textBoxClassConfig.Location = new System.Drawing.Point(78, 148);
+            this.textBoxClassConfig.Multiline = true;
+            this.textBoxClassConfig.Name = "textBoxClassConfig";
+            this.textBoxClassConfig.Size = new System.Drawing.Size(205, 183);
+            this.textBoxClassConfig.TabIndex = 1;
+            // 
+            // buttonUpdateObjectProperties
+            // 
+            this.buttonUpdateObjectProperties.Location = new System.Drawing.Point(78, 351);
+            this.buttonUpdateObjectProperties.Name = "buttonUpdateObjectProperties";
+            this.buttonUpdateObjectProperties.Size = new System.Drawing.Size(150, 79);
+            this.buttonUpdateObjectProperties.TabIndex = 2;
+            this.buttonUpdateObjectProperties.Text = "Update Object Properties";
+            this.buttonUpdateObjectProperties.UseVisualStyleBackColor = true;
+            this.buttonUpdateObjectProperties.Click += new System.EventHandler(this.buttonUpdateObjectProperties_Click);
+            // 
+            // buttonGetScaled
+            // 
+            this.buttonGetScaled.Location = new System.Drawing.Point(496, 249);
+            this.buttonGetScaled.Name = "buttonGetScaled";
+            this.buttonGetScaled.Size = new System.Drawing.Size(105, 40);
+            this.buttonGetScaled.TabIndex = 3;
+            this.buttonGetScaled.Text = "get scaled reading";
+            this.buttonGetScaled.UseVisualStyleBackColor = true;
+            this.buttonGetScaled.Click += new System.EventHandler(this.buttonGetScaled_Click);
             // 
             // MainForm
             // 
@@ -530,6 +586,8 @@
             this.tabLoops2.PerformLayout();
             this.tabLists.ResumeLayout(false);
             this.tabLists.PerformLayout();
+            this.tabPageClass.ResumeLayout(false);
+            this.tabPageClass.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -576,6 +634,11 @@
         public System.IO.Ports.SerialPort serialPort1;
         public System.Windows.Forms.TextBox textBoxCommunication;
         private System.Windows.Forms.Button buttonShowCommands;
+        private System.Windows.Forms.TabPage tabPageClass;
+        private System.Windows.Forms.TextBox textBoxDoubleScaled;
+        private System.Windows.Forms.TextBox textBoxClassConfig;
+        private System.Windows.Forms.Button buttonUpdateObjectProperties;
+        private System.Windows.Forms.Button buttonGetScaled;
     }
 }
 
