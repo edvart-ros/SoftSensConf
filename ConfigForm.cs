@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.IO.Ports;
+using Microsoft.VisualBasic;
 
 namespace Forms
 {
@@ -69,9 +70,22 @@ namespace Forms
 
         private void buttonSetConfig_Click(object sender, EventArgs e)
         {
-            string uploadstring = ("writeconf>password>" + textBoxSetName.Text + ";" + textBoxSetLRV.Text +";" + textBoxSetURV.Text +";" + textBoxSetAlarmL.Text +";" + textBoxSetAlarmH.Text);
-            mf.serialPort1.WriteLine(uploadstring);
-            mf.textBoxCommunication.AppendText("Sent: " + uploadstring + "\r\n");
+            if (mf.serialPort1.IsOpen)
+            {
+                while (true)
+                {
+                    string input = Interaction.InputBox("Please enter password:", "Upload Configuration", "", 600, 400);
+                    string uploadstring = ("writeconf>" + input + ">" + textBoxSetName.Text + ";" + textBoxSetLRV.Text + ";" + textBoxSetURV.Text + ";" + textBoxSetAlarmL.Text + ";" + textBoxSetAlarmH.Text);
+
+                    mf.serialPort1.WriteLine(uploadstring);
+                    mf.textBoxCommunication.AppendText("Sent: " + uploadstring + "\r\n");
+                    break;
+                }
+            }
+            else
+            {
+                MessageBox.Show("You are not connected to a device.");
+            }            
         }
 
         private void buttonSaveConfig_Click(object sender, EventArgs e)
@@ -90,20 +104,22 @@ namespace Forms
                 }
 
             }
-
-
             catch (Exception ex)
             {
                 throw new Exception("error saving file, please try again", ex);
-            }
-            {
-
             }
         }
 
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
-            mf.serialPort1.WriteLine("readconf");
+            try
+            {
+                mf.serialPort1.WriteLine("readconf");
+            }
+            catch
+            {
+                MessageBox.Show("You are not connected to a device");
+            }
         }
 
         private void ConfigForm_FormClosing(object sender, FormClosingEventArgs e)

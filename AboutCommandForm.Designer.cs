@@ -32,18 +32,19 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 24);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(29, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(450, 48);
+            this.label1.Size = new System.Drawing.Size(527, 20);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Here you manually send commands to the arduino.\r\n \r\nHere is a list of the command" +
-    "s you can use to communicate with the device.";
+            this.label1.Text = "Enter a command of your choosing into the text box and click \"Send\". ";
             // 
             // label2
             // 
@@ -65,23 +66,35 @@
             // 
             this.pictureBox1.BackgroundImage = global::Forms.Properties.Resources.commandset;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(32, 90);
+            this.pictureBox1.Location = new System.Drawing.Point(33, 68);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(721, 322);
+            this.pictureBox1.Size = new System.Drawing.Size(646, 220);
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // Form1
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(29, 29);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(394, 20);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "The result will appear in the \"Communication Feed\".";
+            // 
+            // AboutCommandForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(700, 300);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "AboutCommandForm";
+            this.Text = "Manual command sheet";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -94,5 +107,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label4;
     }
 }

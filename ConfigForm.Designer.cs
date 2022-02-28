@@ -66,7 +66,7 @@
             // 
             // txtFile
             // 
-            this.txtFile.Location = new System.Drawing.Point(69, 38);
+            this.txtFile.Location = new System.Drawing.Point(69, 30);
             this.txtFile.Name = "txtFile";
             this.txtFile.Size = new System.Drawing.Size(415, 22);
             this.txtFile.TabIndex = 0;
@@ -77,11 +77,11 @@
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(507, 38);
+            this.btnOpen.Location = new System.Drawing.Point(496, 30);
             this.btnOpen.Name = "btnOpen";
-            this.btnOpen.Size = new System.Drawing.Size(75, 23);
+            this.btnOpen.Size = new System.Drawing.Size(83, 23);
             this.btnOpen.TabIndex = 1;
-            this.btnOpen.Text = "load csv";
+            this.btnOpen.Text = "Load CSV";
             this.btnOpen.UseVisualStyleBackColor = true;
             this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
@@ -99,7 +99,7 @@
             this.groupBoxCurrentConfig.Controls.Add(this.label2);
             this.groupBoxCurrentConfig.Controls.Add(this.label1);
             this.groupBoxCurrentConfig.Controls.Add(this.buttonUpdate);
-            this.groupBoxCurrentConfig.Location = new System.Drawing.Point(417, 108);
+            this.groupBoxCurrentConfig.Location = new System.Drawing.Point(386, 84);
             this.groupBoxCurrentConfig.Name = "groupBoxCurrentConfig";
             this.groupBoxCurrentConfig.Size = new System.Drawing.Size(235, 334);
             this.groupBoxCurrentConfig.TabIndex = 8;
@@ -205,7 +205,7 @@
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.buttonSetConfig);
-            this.groupBox1.Location = new System.Drawing.Point(69, 108);
+            this.groupBox1.Location = new System.Drawing.Point(69, 84);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(234, 334);
             this.groupBox1.TabIndex = 11;
@@ -296,9 +296,9 @@
             // 
             this.buttonSetConfig.Location = new System.Drawing.Point(107, 278);
             this.buttonSetConfig.Name = "buttonSetConfig";
-            this.buttonSetConfig.Size = new System.Drawing.Size(114, 34);
+            this.buttonSetConfig.Size = new System.Drawing.Size(114, 50);
             this.buttonSetConfig.TabIndex = 0;
-            this.buttonSetConfig.Text = "upload to device";
+            this.buttonSetConfig.Text = "Upload to Device";
             this.buttonSetConfig.UseVisualStyleBackColor = true;
             this.buttonSetConfig.Click += new System.EventHandler(this.buttonSetConfig_Click);
             // 
@@ -341,7 +341,7 @@
             // 
             // ConfigForm
             // 
-            this.ClientSize = new System.Drawing.Size(699, 476);
+            this.ClientSize = new System.Drawing.Size(656, 442);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBoxCurrentConfig);
             this.Controls.Add(this.btnOpen);
