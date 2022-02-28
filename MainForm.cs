@@ -109,13 +109,17 @@ namespace Forms
 
                 if (statusInt == 1 && new_failure == 0)
                 {
-                    EnterManualMode();
+                    
                     notifyIcon1.Text = notificationText;
                     notifyIcon1.BalloonTipText = "There is something wrong with your serial device (FAIL).";
                     notifyIcon1.BalloonTipTitle = "WARNING";
                     notifyIcon1.Icon = SystemIcons.Error;
                     notifyIcon1.ShowBalloonTip(10000);
                     new_failure = 1;
+                    if (autoMode)
+                    {
+                        EnterManualMode();
+                    }
                 }
                 else
                 {
@@ -474,6 +478,16 @@ namespace Forms
             {
                 serialPort1.WriteLine("readstatus");
             }
+        }
+
+        private void buttonClearStatus_Click(object sender, EventArgs e)
+        {
+            textBoxStatus.Clear();
+        }
+
+        private void buttonClearFeed_Click(object sender, EventArgs e)
+        {
+            textBoxCommunication.Clear();
         }
     }
 }

@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabSerial = new System.Windows.Forms.TabPage();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -77,6 +77,8 @@
             this.saveFileDialogData = new System.Windows.Forms.SaveFileDialog();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.buttonStatus = new System.Windows.Forms.Button();
+            this.buttonClearStatus = new System.Windows.Forms.Button();
+            this.buttonClearFeed = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.tabSerial.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -101,12 +103,14 @@
             this.tabs.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(902, 539);
+            this.tabs.Size = new System.Drawing.Size(902, 552);
             this.tabs.TabIndex = 0;
             this.tabs.Tag = "";
             // 
             // tabSerial
             // 
+            this.tabSerial.Controls.Add(this.buttonClearFeed);
+            this.tabSerial.Controls.Add(this.buttonClearStatus);
             this.tabSerial.Controls.Add(this.buttonStatus);
             this.tabSerial.Controls.Add(this.statusStrip1);
             this.tabSerial.Controls.Add(this.buttonConfigWindow);
@@ -125,7 +129,7 @@
             this.tabSerial.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabSerial.Name = "tabSerial";
             this.tabSerial.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabSerial.Size = new System.Drawing.Size(894, 510);
+            this.tabSerial.Size = new System.Drawing.Size(894, 523);
             this.tabSerial.TabIndex = 3;
             this.tabSerial.Text = "Serial";
             this.tabSerial.UseVisualStyleBackColor = true;
@@ -135,7 +139,7 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(3, 479);
+            this.statusStrip1.Location = new System.Drawing.Point(3, 492);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(888, 29);
             this.statusStrip1.TabIndex = 22;
@@ -345,7 +349,7 @@
             this.tabPage1.Controls.Add(this.StatusStrip2);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(894, 510);
+            this.tabPage1.Size = new System.Drawing.Size(894, 523);
             this.tabPage1.TabIndex = 4;
             this.tabPage1.Text = "Data";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -355,8 +359,6 @@
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.Controls.Add(this.buttonAuto);
             this.groupBox3.Controls.Add(this.buttonManual);
-            this.groupBox3.Controls.Add(this.labelAverage);
-            this.groupBox3.Controls.Add(this.textBoxAverage);
             this.groupBox3.Controls.Add(this.chartSeries);
             this.groupBox3.Controls.Add(this.panel1);
             this.groupBox3.Location = new System.Drawing.Point(8, 3);
@@ -371,6 +373,8 @@
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Controls.Add(this.textBoxScaledLive);
+            this.groupBox4.Controls.Add(this.textBoxAverage);
+            this.groupBox4.Controls.Add(this.labelAverage);
             this.groupBox4.Controls.Add(this.textBoxRawLive);
             this.groupBox4.Location = new System.Drawing.Point(599, 156);
             this.groupBox4.Name = "groupBox4";
@@ -382,7 +386,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 101);
+            this.label2.Location = new System.Drawing.Point(12, 81);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(91, 16);
             this.label2.TabIndex = 3;
@@ -399,7 +403,7 @@
             // 
             // textBoxScaledLive
             // 
-            this.textBoxScaledLive.Location = new System.Drawing.Point(115, 98);
+            this.textBoxScaledLive.Location = new System.Drawing.Point(125, 78);
             this.textBoxScaledLive.Name = "textBoxScaledLive";
             this.textBoxScaledLive.ReadOnly = true;
             this.textBoxScaledLive.Size = new System.Drawing.Size(100, 22);
@@ -407,7 +411,7 @@
             // 
             // textBoxRawLive
             // 
-            this.textBoxRawLive.Location = new System.Drawing.Point(115, 45);
+            this.textBoxRawLive.Location = new System.Drawing.Point(125, 45);
             this.textBoxRawLive.Name = "textBoxRawLive";
             this.textBoxRawLive.ReadOnly = true;
             this.textBoxRawLive.Size = new System.Drawing.Size(100, 22);
@@ -438,33 +442,34 @@
             // labelAverage
             // 
             this.labelAverage.AutoSize = true;
-            this.labelAverage.Location = new System.Drawing.Point(731, 353);
+            this.labelAverage.Location = new System.Drawing.Point(12, 130);
             this.labelAverage.Name = "labelAverage";
-            this.labelAverage.Size = new System.Drawing.Size(97, 16);
+            this.labelAverage.Size = new System.Drawing.Size(100, 16);
             this.labelAverage.TabIndex = 20;
-            this.labelAverage.Text = "Average Value";
+            this.labelAverage.Text = "Average Value:";
             // 
             // textBoxAverage
             // 
-            this.textBoxAverage.Location = new System.Drawing.Point(734, 381);
+            this.textBoxAverage.Location = new System.Drawing.Point(125, 124);
             this.textBoxAverage.Name = "textBoxAverage";
+            this.textBoxAverage.ReadOnly = true;
             this.textBoxAverage.Size = new System.Drawing.Size(100, 22);
             this.textBoxAverage.TabIndex = 19;
             // 
             // chartSeries
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chartSeries.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chartSeries.Legends.Add(legend2);
+            chartArea3.Name = "ChartArea1";
+            this.chartSeries.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chartSeries.Legends.Add(legend3);
             this.chartSeries.Location = new System.Drawing.Point(6, 20);
             this.chartSeries.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chartSeries.Name = "chartSeries";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Legend = "Legend1";
-            series2.Name = "Vba";
-            this.chartSeries.Series.Add(series2);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Legend = "Legend1";
+            series3.Name = "Vba";
+            this.chartSeries.Series.Add(series3);
             this.chartSeries.Size = new System.Drawing.Size(712, 450);
             this.chartSeries.TabIndex = 13;
             this.chartSeries.Text = "chart1";
@@ -506,7 +511,7 @@
             this.StatusStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.StatusStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusLabel2});
-            this.StatusStrip2.Location = new System.Drawing.Point(0, 481);
+            this.StatusStrip2.Location = new System.Drawing.Point(0, 494);
             this.StatusStrip2.Name = "StatusStrip2";
             this.StatusStrip2.Size = new System.Drawing.Size(894, 29);
             this.StatusStrip2.TabIndex = 23;
@@ -532,11 +537,31 @@
             // 
             this.buttonStatus.Location = new System.Drawing.Point(29, 452);
             this.buttonStatus.Name = "buttonStatus";
-            this.buttonStatus.Size = new System.Drawing.Size(80, 23);
+            this.buttonStatus.Size = new System.Drawing.Size(116, 23);
             this.buttonStatus.TabIndex = 23;
             this.buttonStatus.Text = "Update Status";
             this.buttonStatus.UseVisualStyleBackColor = true;
             this.buttonStatus.Click += new System.EventHandler(this.buttonStatus_Click);
+            // 
+            // buttonClearStatus
+            // 
+            this.buttonClearStatus.Location = new System.Drawing.Point(228, 452);
+            this.buttonClearStatus.Name = "buttonClearStatus";
+            this.buttonClearStatus.Size = new System.Drawing.Size(75, 23);
+            this.buttonClearStatus.TabIndex = 24;
+            this.buttonClearStatus.Text = "Clear";
+            this.buttonClearStatus.UseVisualStyleBackColor = true;
+            this.buttonClearStatus.Click += new System.EventHandler(this.buttonClearStatus_Click);
+            // 
+            // buttonClearFeed
+            // 
+            this.buttonClearFeed.Location = new System.Drawing.Point(546, 315);
+            this.buttonClearFeed.Name = "buttonClearFeed";
+            this.buttonClearFeed.Size = new System.Drawing.Size(75, 23);
+            this.buttonClearFeed.TabIndex = 25;
+            this.buttonClearFeed.Text = "Clear";
+            this.buttonClearFeed.UseVisualStyleBackColor = true;
+            this.buttonClearFeed.Click += new System.EventHandler(this.buttonClearFeed_Click);
             // 
             // MainForm
             // 
@@ -544,13 +569,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(902, 539);
+            this.ClientSize = new System.Drawing.Size(902, 552);
             this.Controls.Add(this.tabs);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainForm";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Temperature App";
+            this.Text = "SoftSensConf";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabs.ResumeLayout(false);
             this.tabSerial.ResumeLayout(false);
@@ -566,7 +591,6 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartSeries)).EndInit();
@@ -625,6 +649,8 @@
         private System.Windows.Forms.Button buttonManual2;
         private System.Windows.Forms.Button buttonAuto2;
         private System.Windows.Forms.Button buttonStatus;
+        private System.Windows.Forms.Button buttonClearFeed;
+        private System.Windows.Forms.Button buttonClearStatus;
     }
 }
 
