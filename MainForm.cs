@@ -47,6 +47,8 @@ namespace Forms
 
                 chartSeries.Series[0].XValueType = ChartValueType.DateTime;
                 chartSeries.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm:ss";
+                chartSeries.ChartAreas["ChartArea1"].AxisX.Title = "Timestamp";
+                chartSeries.ChartAreas["ChartArea1"].AxisY.Title = "Analog Reading";
         }
 
 
@@ -148,7 +150,7 @@ namespace Forms
             {
                 try
                 {
-                    MessageBox.Show("successfully read device configuration");
+                    
                     ConfigForm.configformInstance.textBoxCurrentName.Text = separateParts[1]; 
                     ConfigForm.configformInstance.textBoxCurrentLRV.Text = separateParts[2];
                     ConfigForm.configformInstance.textBoxCurrentURV.Text = separateParts[3];
@@ -158,6 +160,7 @@ namespace Forms
                     instr.tagname = separateParts[1];
                     instr.lrv = double.Parse(separateParts[2]);
                     instr.urv = double.Parse(separateParts[3]);
+                    MessageBox.Show("successfully read device configuration");
                 }
                 catch
                 {
@@ -370,6 +373,9 @@ namespace Forms
         public void saveStringList(List<string> data)
         {
             SaveFileDialog saveFileDialogData = new SaveFileDialog();
+            saveFileDialogData.DefaultExt = "csv";
+            saveFileDialogData.Filter =
+            "CSV file (*.csv)|*.csv";
             if (saveFileDialogData.ShowDialog() == DialogResult.OK)
             {
                 using (Stream s = File.Open(saveFileDialogData.FileName, FileMode.Create))
@@ -406,6 +412,7 @@ namespace Forms
             textBoxAverage.Clear();
             textBoxRawLive.Clear();
             textBoxScaledLive.Clear();
+            labelLiveMonitor.Text = "Recorded Data:";
 
             if (configformactive)
             {
@@ -430,7 +437,7 @@ namespace Forms
                 textBoxSend.ReadOnly = true;
                 timer1.Start();
                 autoMode=true;
-                buttonConfigWindow.Enabled = false;
+                
                 buttonSend.Enabled = false;
                 buttonConnect.Enabled = false;
                 radioButtonRaw.Enabled = false;
@@ -441,6 +448,7 @@ namespace Forms
                 buttonManual.Enabled = true;
                 buttonManual2.Enabled = true;
                 buttonStatus.Enabled = false;
+                labelLiveMonitor.Text = "Live Data:";
 
                 clearData();
                 

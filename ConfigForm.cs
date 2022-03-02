@@ -31,15 +31,20 @@ namespace Forms
 
             private void btnOpen_Click(object sender, EventArgs e)
         {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.DefaultExt = "csv";
+            ofd.Filter =
+            "CSV file (*.csv)|*.csv";
 
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+
+            if (ofd.ShowDialog() == DialogResult.OK)
             {
-                txtFile.Text = openFileDialog1.FileName;
+                txtFile.Text = ofd.FileName;
                 LoadData(txtFile.Text);
             }
             else
             {
-                MessageBox.Show(this, "du valgte ingen fil");
+                MessageBox.Show(this, "You did not select a file.");
             }
             
            
@@ -70,44 +75,110 @@ namespace Forms
 
         private void buttonSetConfig_Click(object sender, EventArgs e)
         {
-            if (mf.serialPort1.IsOpen)
+            if (textBoxSetName.Text.Length == 0 || textBoxSetLRV.Text.Length == 0 || textBoxSetURV.Text.Length == 0 || textBoxSetAlarmL.Text.Length == 0 || textBoxSetAlarmH.Text.Length == 0)
             {
-                while (true)
-                {
-                    string input = Interaction.InputBox("Please enter password:", "Upload Configuration", "", 600, 400);
-                    string uploadstring = ("writeconf>" + input + ">" + textBoxSetName.Text + ";" + textBoxSetLRV.Text + ";" + textBoxSetURV.Text + ";" + textBoxSetAlarmL.Text + ";" + textBoxSetAlarmH.Text);
-
-                    mf.serialPort1.WriteLine(uploadstring);
-                    mf.textBoxCommunication.AppendText("Sent: " + uploadstring + "\r\n");
-                    break;
-                }
+                MessageBox.Show("Configuration parameters cannot be empty.");
             }
+
             else
             {
-                MessageBox.Show("You are not connected to a device.");
-            }            
+                if (mf.serialPort1.IsOpen)
+                {
+                    while (true)
+                    {
+                        string input = Interaction.InputBox("Please enter password:", "Upload Configuration", "", 1000, 700);
+                        
+                        if (input.Length > 1)
+                        {
+                            string uploadstring = ("writeconf>" + input + ">" + textBoxSetName.Text + ";" + textBoxSetLRV.Text + ";" + textBoxSetURV.Text + ";" + textBoxSetAlarmL.Text + ";" + textBoxSetAlarmH.Text);
+
+
+                            mf.serialPort1.WriteLine(uploadstring);
+                            mf.textBoxCommunication.AppendText("Sent: " + uploadstring + "\r\n");
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
+
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("You are not connected to a device.");
+                }  
+            }
+
+          
         }
 
         private void buttonSaveConfig_Click(object sender, EventArgs e)
         {
-            try
+            if (textBoxSetName.Text.Length == 0 || textBoxSetLRV.Text.Length == 0 || textBoxSetURV.Text.Length == 0 || textBoxSetAlarmL.Text.Length == 0 || textBoxSetAlarmH.Text.Length == 0)
             {
-                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-                {
-                    using (Stream s = File.Open(saveFileDialog1.FileName, FileMode.Create))
-                    using (StreamWriter sw = new StreamWriter(s))
-                    {
-                        string data = textBoxSetName.Text + "," + textBoxSetLRV.Text + "," + textBoxSetURV.Text + "," + textBoxSetAlarmL.Text + "," + textBoxSetAlarmH.Text;
-                        sw.Write(data);
-                    }
-                }
+                MessageBox.Show("Configuration parameters cannot be empty.");
+            }
 
-            }
-            catch (Exception ex)
+            else
             {
-                throw new Exception("error saving file, please try again", ex);
+                try
+                {
+                    SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                    saveFileDialog1.DefaultExt = "csv";
+                    saveFileDialog1.Filter =
+                    "CSV file (*.csv)|*.csv";
+                    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                    {
+                        using (Stream s = File.Open(saveFileDialog1.FileName, FileMode.Create))
+                        using (StreamWriter sw = new StreamWriter(s))
+                        {
+                            string data = textBoxSetName.Text + "," + textBoxSetLRV.Text + "," + textBoxSetURV.Text + "," + textBoxSetAlarmL.Text + "," + textBoxSetAlarmH.Text;
+                            sw.Write(data);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("error saving file, please try again", ex);
+                }
             }
+
+        }
+
+        private void buttonSaveCurrentConfig_Click(object sender, EventArgs e)
+        {
+            if (textBoxCurrentName.Text.Length == 0 || textBoxCurrentLRV.Text.Length == 0 || textBoxCurrentURV.Text.Length == 0 || textBoxCurrentAlarmL.Text.Length == 0 || textBoxCurrentAlarmH.Text.Length == 0)
+            {
+                MessageBox.Show("Configuration parameters cannot be empty.");
+            }
+
+            else
+            {
+                try
+                {
+                    SaveFileDialog saveFileDialog2 = new SaveFileDialog();
+                    saveFileDialog2.DefaultExt = "csv";
+                    saveFileDialog2.Filter =
+                    "CSV file (*.csv)|*.csv";
+                    if (saveFileDialog2.ShowDialog() == DialogResult.OK)
+                    {
+                        using (Stream s = File.Open(saveFileDialog2.FileName, FileMode.Create))
+                        using (StreamWriter sw = new StreamWriter(s))
+                        {
+                            string data = textBoxCurrentName.Text + "," + textBoxCurrentLRV.Text + "," + textBoxCurrentURV.Text + "," + textBoxCurrentAlarmL.Text + "," + textBoxCurrentAlarmH.Text;
+                            sw.Write(data);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("error saving file, please try again", ex);
+                }
+            }
+
         }
 
         private void buttonUpdate_Click(object sender, EventArgs e)
