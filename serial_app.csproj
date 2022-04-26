@@ -48,6 +48,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xaml" />
@@ -71,7 +72,7 @@
       <DependentUpon>AboutCommandForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Class1.cs" />
-    <Compile Include="Class2.cs" />
+    <Compile Include="Class3.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -33,6 +33,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.btnOpen = new System.Windows.Forms.Button();
             this.groupBoxCurrentConfig = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.textBoxCurrentAlarmH = new System.Windows.Forms.TextBox();
             this.textBoxCurrentAlarmL = new System.Windows.Forms.TextBox();
             this.textBoxCurrentURV = new System.Windows.Forms.TextBox();
@@ -43,7 +44,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.buttonUpdate = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonSaveConfig = new System.Windows.Forms.Button();
             this.textBoxSetAlarmH = new System.Windows.Forms.TextBox();
             this.textBoxSetAlarmL = new System.Windows.Forms.TextBox();
             this.textBoxSetURV = new System.Windows.Forms.TextBox();
@@ -57,9 +60,8 @@
             this.buttonSetConfig = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.buttonSaveConfig = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.buttonUpdate = new System.Windows.Forms.Button();
+            this.comboBoxInstruments = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.groupBoxCurrentConfig.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -99,12 +101,23 @@
             this.groupBoxCurrentConfig.Controls.Add(this.label2);
             this.groupBoxCurrentConfig.Controls.Add(this.label1);
             this.groupBoxCurrentConfig.Controls.Add(this.buttonUpdate);
-            this.groupBoxCurrentConfig.Location = new System.Drawing.Point(386, 84);
+            this.groupBoxCurrentConfig.Location = new System.Drawing.Point(386, 81);
             this.groupBoxCurrentConfig.Name = "groupBoxCurrentConfig";
-            this.groupBoxCurrentConfig.Size = new System.Drawing.Size(235, 334);
+            this.groupBoxCurrentConfig.Size = new System.Drawing.Size(235, 349);
             this.groupBoxCurrentConfig.TabIndex = 8;
             this.groupBoxCurrentConfig.TabStop = false;
             this.groupBoxCurrentConfig.Text = "Current configuration";
+            // 
+            // button1
+            // 
+            this.button1.BackgroundImage = global::Forms.Properties.Resources.images;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button1.Location = new System.Drawing.Point(166, 10);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(27, 28);
+            this.button1.TabIndex = 12;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.buttonSaveConfig_Click);
             // 
             // textBoxCurrentAlarmH
             // 
@@ -191,8 +204,21 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Name: ";
             // 
+            // buttonUpdate
+            // 
+            this.buttonUpdate.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonUpdate.BackgroundImage")));
+            this.buttonUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonUpdate.Location = new System.Drawing.Point(199, 10);
+            this.buttonUpdate.Name = "buttonUpdate";
+            this.buttonUpdate.Size = new System.Drawing.Size(30, 28);
+            this.buttonUpdate.TabIndex = 0;
+            this.buttonUpdate.UseVisualStyleBackColor = true;
+            this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
+            // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.comboBoxInstruments);
             this.groupBox1.Controls.Add(this.buttonSaveConfig);
             this.groupBox1.Controls.Add(this.textBoxSetAlarmH);
             this.groupBox1.Controls.Add(this.textBoxSetAlarmL);
@@ -205,106 +231,12 @@
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.buttonSetConfig);
-            this.groupBox1.Location = new System.Drawing.Point(69, 84);
+            this.groupBox1.Location = new System.Drawing.Point(69, 81);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(234, 334);
+            this.groupBox1.Size = new System.Drawing.Size(234, 349);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Set New Configuration";
-            // 
-            // textBoxSetAlarmH
-            // 
-            this.textBoxSetAlarmH.Location = new System.Drawing.Point(107, 230);
-            this.textBoxSetAlarmH.Name = "textBoxSetAlarmH";
-            this.textBoxSetAlarmH.Size = new System.Drawing.Size(34, 22);
-            this.textBoxSetAlarmH.TabIndex = 10;
-            // 
-            // textBoxSetAlarmL
-            // 
-            this.textBoxSetAlarmL.Location = new System.Drawing.Point(107, 186);
-            this.textBoxSetAlarmL.Name = "textBoxSetAlarmL";
-            this.textBoxSetAlarmL.Size = new System.Drawing.Size(34, 22);
-            this.textBoxSetAlarmL.TabIndex = 9;
-            // 
-            // textBoxSetURV
-            // 
-            this.textBoxSetURV.Location = new System.Drawing.Point(107, 141);
-            this.textBoxSetURV.Name = "textBoxSetURV";
-            this.textBoxSetURV.Size = new System.Drawing.Size(34, 22);
-            this.textBoxSetURV.TabIndex = 8;
-            // 
-            // textBoxSetLRV
-            // 
-            this.textBoxSetLRV.Location = new System.Drawing.Point(107, 96);
-            this.textBoxSetLRV.Name = "textBoxSetLRV";
-            this.textBoxSetLRV.Size = new System.Drawing.Size(34, 22);
-            this.textBoxSetLRV.TabIndex = 7;
-            // 
-            // textBoxSetName
-            // 
-            this.textBoxSetName.Location = new System.Drawing.Point(107, 55);
-            this.textBoxSetName.Name = "textBoxSetName";
-            this.textBoxSetName.Size = new System.Drawing.Size(92, 22);
-            this.textBoxSetName.TabIndex = 6;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(18, 233);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(76, 16);
-            this.label6.TabIndex = 5;
-            this.label6.Text = "Alarm high: ";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(18, 189);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(68, 16);
-            this.label7.TabIndex = 4;
-            this.label7.Text = "Alarm low:";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(18, 144);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(42, 16);
-            this.label8.TabIndex = 3;
-            this.label8.Text = "URV: ";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(18, 99);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(39, 16);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "LRV: ";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(18, 55);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(50, 16);
-            this.label10.TabIndex = 1;
-            this.label10.Text = "Name: ";
-            // 
-            // buttonSetConfig
-            // 
-            this.buttonSetConfig.Location = new System.Drawing.Point(107, 278);
-            this.buttonSetConfig.Name = "buttonSetConfig";
-            this.buttonSetConfig.Size = new System.Drawing.Size(114, 50);
-            this.buttonSetConfig.TabIndex = 0;
-            this.buttonSetConfig.Text = "Upload to Device";
-            this.buttonSetConfig.UseVisualStyleBackColor = true;
-            this.buttonSetConfig.Click += new System.EventHandler(this.buttonSetConfig_Click);
-            // 
-            // saveFileDialog1
-            // 
-            this.saveFileDialog1.DefaultExt = "csv";
             // 
             // buttonSaveConfig
             // 
@@ -317,27 +249,118 @@
             this.buttonSaveConfig.UseVisualStyleBackColor = true;
             this.buttonSaveConfig.Click += new System.EventHandler(this.buttonSaveConfig_Click);
             // 
-            // button1
+            // textBoxSetAlarmH
             // 
-            this.button1.BackgroundImage = global::Forms.Properties.Resources.images;
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button1.Location = new System.Drawing.Point(166, 10);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(27, 28);
-            this.button1.TabIndex = 12;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.buttonSaveConfig_Click);
+            this.textBoxSetAlarmH.Location = new System.Drawing.Point(104, 255);
+            this.textBoxSetAlarmH.Name = "textBoxSetAlarmH";
+            this.textBoxSetAlarmH.Size = new System.Drawing.Size(34, 22);
+            this.textBoxSetAlarmH.TabIndex = 10;
             // 
-            // buttonUpdate
+            // textBoxSetAlarmL
             // 
-            this.buttonUpdate.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonUpdate.BackgroundImage")));
-            this.buttonUpdate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.buttonUpdate.Location = new System.Drawing.Point(199, 10);
-            this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(30, 28);
-            this.buttonUpdate.TabIndex = 0;
-            this.buttonUpdate.UseVisualStyleBackColor = true;
-            this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
+            this.textBoxSetAlarmL.Location = new System.Drawing.Point(104, 211);
+            this.textBoxSetAlarmL.Name = "textBoxSetAlarmL";
+            this.textBoxSetAlarmL.Size = new System.Drawing.Size(34, 22);
+            this.textBoxSetAlarmL.TabIndex = 9;
+            // 
+            // textBoxSetURV
+            // 
+            this.textBoxSetURV.Location = new System.Drawing.Point(104, 166);
+            this.textBoxSetURV.Name = "textBoxSetURV";
+            this.textBoxSetURV.Size = new System.Drawing.Size(34, 22);
+            this.textBoxSetURV.TabIndex = 8;
+            // 
+            // textBoxSetLRV
+            // 
+            this.textBoxSetLRV.Location = new System.Drawing.Point(104, 121);
+            this.textBoxSetLRV.Name = "textBoxSetLRV";
+            this.textBoxSetLRV.Size = new System.Drawing.Size(34, 22);
+            this.textBoxSetLRV.TabIndex = 7;
+            // 
+            // textBoxSetName
+            // 
+            this.textBoxSetName.Location = new System.Drawing.Point(101, 80);
+            this.textBoxSetName.Name = "textBoxSetName";
+            this.textBoxSetName.Size = new System.Drawing.Size(92, 22);
+            this.textBoxSetName.TabIndex = 6;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(15, 258);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(76, 16);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "Alarm high: ";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(15, 214);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(68, 16);
+            this.label7.TabIndex = 4;
+            this.label7.Text = "Alarm low:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(15, 169);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(42, 16);
+            this.label8.TabIndex = 3;
+            this.label8.Text = "URV: ";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(15, 124);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(39, 16);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "LRV: ";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(15, 80);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(50, 16);
+            this.label10.TabIndex = 1;
+            this.label10.Text = "Name: ";
+            // 
+            // buttonSetConfig
+            // 
+            this.buttonSetConfig.Location = new System.Drawing.Point(107, 293);
+            this.buttonSetConfig.Name = "buttonSetConfig";
+            this.buttonSetConfig.Size = new System.Drawing.Size(114, 50);
+            this.buttonSetConfig.TabIndex = 0;
+            this.buttonSetConfig.Text = "Upload to Device";
+            this.buttonSetConfig.UseVisualStyleBackColor = true;
+            this.buttonSetConfig.Click += new System.EventHandler(this.buttonSetConfig_Click);
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.DefaultExt = "csv";
+            // 
+            // comboBoxInstruments
+            // 
+            this.comboBoxInstruments.FormattingEnabled = true;
+            this.comboBoxInstruments.Location = new System.Drawing.Point(101, 44);
+            this.comboBoxInstruments.Name = "comboBoxInstruments";
+            this.comboBoxInstruments.Size = new System.Drawing.Size(105, 24);
+            this.comboBoxInstruments.TabIndex = 12;
+            this.comboBoxInstruments.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBoxInstruments.Click += new System.EventHandler(this.comboBoxInstruments_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(18, 44);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(48, 16);
+            this.label11.TabIndex = 13;
+            this.label11.Text = "Select:";
             // 
             // ConfigForm
             // 
@@ -392,5 +415,7 @@
         public System.Windows.Forms.Button buttonUpdate;
         public System.Windows.Forms.Button buttonSetConfig;
         public System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox comboBoxInstruments;
+        private System.Windows.Forms.Label label11;
     }
 }

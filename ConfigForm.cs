@@ -11,6 +11,11 @@ using System.Windows.Forms;
 using System.IO;
 using System.IO.Ports;
 using Microsoft.VisualBasic;
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Threading;
+using System.Media;
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace Forms
 {
@@ -18,6 +23,8 @@ namespace Forms
     public partial class ConfigForm : Form
     {
         public static ConfigForm configformInstance;
+        List<string> sqlConfigResult = new List<string>();
+        string conSoftSensConf = ConfigurationManager.ConnectionStrings["conSoftSensConf"].ConnectionString;
 
         MainForm mf;
         public ConfigForm(MainForm tempform)
@@ -76,7 +83,9 @@ namespace Forms
                 {
                     string input = Interaction.InputBox("Please enter password:", "Upload Configuration", "", 600, 400);
                     string uploadstring = ("writeconf>" + input + ">" + textBoxSetName.Text + ";" + textBoxSetLRV.Text + ";" + textBoxSetURV.Text + ";" + textBoxSetAlarmL.Text + ";" + textBoxSetAlarmH.Text);
-
+                    
+                    SqlConnection con = new SqlConnection(conSoftSensConf);
+                    SQLHelperClass.SetConfigInDB(comboBoxInstruments.SelectedItem.ToString(), textBoxSetName.Text, int.Parse(textBoxSetLRV.Text), int.Parse(textBoxSetURV.Text), int.Parse(textBoxSetAlarmL.Text), int.Parse(textBoxSetAlarmH.Text), con);
                     mf.serialPort1.WriteLine(uploadstring);
                     mf.textBoxCommunication.AppendText("Sent: " + uploadstring + "\r\n");
                     break;
@@ -112,19 +121,44 @@ namespace Forms
 
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
-            try
-            {
-                mf.serialPort1.WriteLine("readconf");
-            }
-            catch
-            {
-                MessageBox.Show("You are not connected to a device");
-            }
+            SqlConnection con = new SqlConnection(conSoftSensConf);
+            sqlConfigResult = SQLHelperClass.GetConfigFromDB(con, mf.instr.tagname);
+            this.textBoxCurrentName.Text = sqlConfigResult[0];
+            this.textBoxCurrentLRV.Text = sqlConfigResult[1];
+            this.textBoxCurrentURV.Text = sqlConfigResult[2];
+            this.textBoxCurrentAlarmL.Text = sqlConfigResult[3];
+            this.textBoxCurrentAlarmH.Text = sqlConfigResult[4];
         }
 
         private void ConfigForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             mf.configformactive = false;
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            List<string> sqlResult = new List<string>();
+            SqlConnection con = new SqlConnection(conSoftSensConf);
+
+            sqlResult = SQLHelperClass.GetConfigFromDB(con, comboBoxInstruments.SelectedItem.ToString());
+            textBoxSetName.Text = sqlResult[0];
+            textBoxSetLRV.Text = sqlResult[1];
+            textBoxSetURV.Text = sqlResult[2];
+            textBoxSetAlarmL.Text = sqlResult[3];
+            textBoxSetAlarmH.Text = sqlResult [4];
+        }
+
+        private void comboBoxInstruments_Click(object sender, EventArgs e)
+        {
+            comboBoxInstruments.Items.Clear();
+            List<string> sqlResult = new List<string>();
+            SqlConnection conn = new SqlConnection(conSoftSensConf);
+
+            sqlResult = SQLHelperClass.GetInstrumentNamesFromDB(conn);
+            foreach (string TagName in sqlResult)
+            {
+                comboBoxInstruments.Items.Add(TagName);
+            }
         }
     }
 }

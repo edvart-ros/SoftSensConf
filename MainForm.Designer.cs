@@ -29,11 +29,17 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabSerial = new System.Windows.Forms.TabPage();
+            this.buttonGetTask = new System.Windows.Forms.Button();
+            this.textBoxOutputValue = new System.Windows.Forms.TextBox();
+            this.textBoxDataID = new System.Windows.Forms.TextBox();
+            this.buttonClearFeed = new System.Windows.Forms.Button();
+            this.buttonClearStatus = new System.Windows.Forms.Button();
+            this.buttonStatus = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.buttonConfigWindow = new System.Windows.Forms.Button();
@@ -61,11 +67,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxScaledLive = new System.Windows.Forms.TextBox();
+            this.textBoxAverage = new System.Windows.Forms.TextBox();
+            this.labelAverage = new System.Windows.Forms.Label();
             this.textBoxRawLive = new System.Windows.Forms.TextBox();
             this.buttonAuto = new System.Windows.Forms.Button();
             this.buttonManual = new System.Windows.Forms.Button();
-            this.labelAverage = new System.Windows.Forms.Label();
-            this.textBoxAverage = new System.Windows.Forms.TextBox();
             this.chartSeries = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panel1 = new System.Windows.Forms.Panel();
             this.radioButtonScaled = new System.Windows.Forms.RadioButton();
@@ -76,9 +82,9 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.saveFileDialogData = new System.Windows.Forms.SaveFileDialog();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.buttonStatus = new System.Windows.Forms.Button();
-            this.buttonClearStatus = new System.Windows.Forms.Button();
-            this.buttonClearFeed = new System.Windows.Forms.Button();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.textBoxFreq = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.tabSerial.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -109,6 +115,9 @@
             // 
             // tabSerial
             // 
+            this.tabSerial.Controls.Add(this.buttonGetTask);
+            this.tabSerial.Controls.Add(this.textBoxOutputValue);
+            this.tabSerial.Controls.Add(this.textBoxDataID);
             this.tabSerial.Controls.Add(this.buttonClearFeed);
             this.tabSerial.Controls.Add(this.buttonClearStatus);
             this.tabSerial.Controls.Add(this.buttonStatus);
@@ -133,6 +142,60 @@
             this.tabSerial.TabIndex = 3;
             this.tabSerial.Text = "Serial";
             this.tabSerial.UseVisualStyleBackColor = true;
+            // 
+            // buttonGetTask
+            // 
+            this.buttonGetTask.Location = new System.Drawing.Point(463, 366);
+            this.buttonGetTask.Name = "buttonGetTask";
+            this.buttonGetTask.Size = new System.Drawing.Size(75, 23);
+            this.buttonGetTask.TabIndex = 28;
+            this.buttonGetTask.Text = "get task";
+            this.buttonGetTask.UseVisualStyleBackColor = true;
+            this.buttonGetTask.Click += new System.EventHandler(this.buttonGetTask_Click);
+            // 
+            // textBoxOutputValue
+            // 
+            this.textBoxOutputValue.Location = new System.Drawing.Point(582, 394);
+            this.textBoxOutputValue.Name = "textBoxOutputValue";
+            this.textBoxOutputValue.Size = new System.Drawing.Size(100, 22);
+            this.textBoxOutputValue.TabIndex = 27;
+            // 
+            // textBoxDataID
+            // 
+            this.textBoxDataID.Location = new System.Drawing.Point(463, 395);
+            this.textBoxDataID.Name = "textBoxDataID";
+            this.textBoxDataID.Size = new System.Drawing.Size(100, 22);
+            this.textBoxDataID.TabIndex = 26;
+            // 
+            // buttonClearFeed
+            // 
+            this.buttonClearFeed.Location = new System.Drawing.Point(546, 315);
+            this.buttonClearFeed.Name = "buttonClearFeed";
+            this.buttonClearFeed.Size = new System.Drawing.Size(75, 23);
+            this.buttonClearFeed.TabIndex = 25;
+            this.buttonClearFeed.Text = "Clear";
+            this.buttonClearFeed.UseVisualStyleBackColor = true;
+            this.buttonClearFeed.Click += new System.EventHandler(this.buttonClearFeed_Click);
+            // 
+            // buttonClearStatus
+            // 
+            this.buttonClearStatus.Location = new System.Drawing.Point(228, 452);
+            this.buttonClearStatus.Name = "buttonClearStatus";
+            this.buttonClearStatus.Size = new System.Drawing.Size(75, 23);
+            this.buttonClearStatus.TabIndex = 24;
+            this.buttonClearStatus.Text = "Clear";
+            this.buttonClearStatus.UseVisualStyleBackColor = true;
+            this.buttonClearStatus.Click += new System.EventHandler(this.buttonClearStatus_Click);
+            // 
+            // buttonStatus
+            // 
+            this.buttonStatus.Location = new System.Drawing.Point(29, 452);
+            this.buttonStatus.Name = "buttonStatus";
+            this.buttonStatus.Size = new System.Drawing.Size(116, 23);
+            this.buttonStatus.TabIndex = 23;
+            this.buttonStatus.Text = "Update Status";
+            this.buttonStatus.UseVisualStyleBackColor = true;
+            this.buttonStatus.Click += new System.EventHandler(this.buttonStatus_Click);
             // 
             // statusStrip1
             // 
@@ -192,6 +255,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.textBoxFreq);
+            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.buttonManual2);
             this.groupBox1.Controls.Add(this.buttonShowCommands);
             this.groupBox1.Controls.Add(this.buttonAuto2);
@@ -262,14 +327,14 @@
             this.toolStripLabel1});
             this.toolStrip1.Location = new System.Drawing.Point(3, 2);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(888, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(888, 31);
             this.toolStrip1.TabIndex = 10;
             this.toolStrip1.Text = "toolStrip1";
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(111, 22);
+            this.toolStripLabel1.Size = new System.Drawing.Size(111, 28);
             this.toolStripLabel1.Text = "toolStripLabel1";
             // 
             // textBoxCommunication
@@ -341,6 +406,7 @@
             this.comboBoxCOM.Name = "comboBoxCOM";
             this.comboBoxCOM.Size = new System.Drawing.Size(121, 24);
             this.comboBoxCOM.TabIndex = 0;
+            this.comboBoxCOM.SelectedIndexChanged += new System.EventHandler(this.comboBoxCOM_SelectedIndexChanged);
             this.comboBoxCOM.MouseClick += new System.Windows.Forms.MouseEventHandler(this.comboBox2_MouseClick);
             // 
             // tabPage1
@@ -409,6 +475,24 @@
             this.textBoxScaledLive.Size = new System.Drawing.Size(100, 22);
             this.textBoxScaledLive.TabIndex = 1;
             // 
+            // textBoxAverage
+            // 
+            this.textBoxAverage.Location = new System.Drawing.Point(125, 124);
+            this.textBoxAverage.Name = "textBoxAverage";
+            this.textBoxAverage.ReadOnly = true;
+            this.textBoxAverage.Size = new System.Drawing.Size(100, 22);
+            this.textBoxAverage.TabIndex = 19;
+            // 
+            // labelAverage
+            // 
+            this.labelAverage.AutoSize = true;
+            this.labelAverage.Location = new System.Drawing.Point(12, 130);
+            this.labelAverage.Name = "labelAverage";
+            this.labelAverage.Size = new System.Drawing.Size(108, 16);
+            this.labelAverage.TabIndex = 20;
+            this.labelAverage.Text = "Scaled Average:";
+            this.labelAverage.Click += new System.EventHandler(this.labelAverage_Click);
+            // 
             // textBoxRawLive
             // 
             this.textBoxRawLive.Location = new System.Drawing.Point(125, 45);
@@ -439,37 +523,20 @@
             this.buttonManual.UseVisualStyleBackColor = true;
             this.buttonManual.Click += new System.EventHandler(this.buttonManual_Click);
             // 
-            // labelAverage
-            // 
-            this.labelAverage.AutoSize = true;
-            this.labelAverage.Location = new System.Drawing.Point(12, 130);
-            this.labelAverage.Name = "labelAverage";
-            this.labelAverage.Size = new System.Drawing.Size(100, 16);
-            this.labelAverage.TabIndex = 20;
-            this.labelAverage.Text = "Average Value:";
-            // 
-            // textBoxAverage
-            // 
-            this.textBoxAverage.Location = new System.Drawing.Point(125, 124);
-            this.textBoxAverage.Name = "textBoxAverage";
-            this.textBoxAverage.ReadOnly = true;
-            this.textBoxAverage.Size = new System.Drawing.Size(100, 22);
-            this.textBoxAverage.TabIndex = 19;
-            // 
             // chartSeries
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chartSeries.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chartSeries.Legends.Add(legend3);
+            chartArea2.Name = "ChartArea1";
+            this.chartSeries.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartSeries.Legends.Add(legend2);
             this.chartSeries.Location = new System.Drawing.Point(6, 20);
             this.chartSeries.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chartSeries.Name = "chartSeries";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Legend = "Legend1";
-            series3.Name = "Vba";
-            this.chartSeries.Series.Add(series3);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Legend = "Legend1";
+            series2.Name = "Vba";
+            this.chartSeries.Series.Add(series2);
             this.chartSeries.Size = new System.Drawing.Size(712, 450);
             this.chartSeries.TabIndex = 13;
             this.chartSeries.Text = "chart1";
@@ -533,35 +600,21 @@
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             // 
-            // buttonStatus
+            // textBoxFreq
             // 
-            this.buttonStatus.Location = new System.Drawing.Point(29, 452);
-            this.buttonStatus.Name = "buttonStatus";
-            this.buttonStatus.Size = new System.Drawing.Size(116, 23);
-            this.buttonStatus.TabIndex = 23;
-            this.buttonStatus.Text = "Update Status";
-            this.buttonStatus.UseVisualStyleBackColor = true;
-            this.buttonStatus.Click += new System.EventHandler(this.buttonStatus_Click);
+            this.textBoxFreq.Location = new System.Drawing.Point(107, 127);
+            this.textBoxFreq.Name = "textBoxFreq";
+            this.textBoxFreq.Size = new System.Drawing.Size(82, 22);
+            this.textBoxFreq.TabIndex = 29;
             // 
-            // buttonClearStatus
+            // label4
             // 
-            this.buttonClearStatus.Location = new System.Drawing.Point(228, 452);
-            this.buttonClearStatus.Name = "buttonClearStatus";
-            this.buttonClearStatus.Size = new System.Drawing.Size(75, 23);
-            this.buttonClearStatus.TabIndex = 24;
-            this.buttonClearStatus.Text = "Clear";
-            this.buttonClearStatus.UseVisualStyleBackColor = true;
-            this.buttonClearStatus.Click += new System.EventHandler(this.buttonClearStatus_Click);
-            // 
-            // buttonClearFeed
-            // 
-            this.buttonClearFeed.Location = new System.Drawing.Point(546, 315);
-            this.buttonClearFeed.Name = "buttonClearFeed";
-            this.buttonClearFeed.Size = new System.Drawing.Size(75, 23);
-            this.buttonClearFeed.TabIndex = 25;
-            this.buttonClearFeed.Text = "Clear";
-            this.buttonClearFeed.UseVisualStyleBackColor = true;
-            this.buttonClearFeed.Click += new System.EventHandler(this.buttonClearFeed_Click);
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 130);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(95, 16);
+            this.label4.TabIndex = 30;
+            this.label4.Text = "frequency(ms):";
             // 
             // MainForm
             // 
@@ -651,6 +704,12 @@
         private System.Windows.Forms.Button buttonStatus;
         private System.Windows.Forms.Button buttonClearFeed;
         private System.Windows.Forms.Button buttonClearStatus;
+        private System.Windows.Forms.TextBox textBoxOutputValue;
+        private System.Windows.Forms.TextBox textBoxDataID;
+        private System.Windows.Forms.Button buttonGetTask;
+        private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.TextBox textBoxFreq;
+        private System.Windows.Forms.Label label4;
     }
 }
 

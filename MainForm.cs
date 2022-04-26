@@ -12,81 +12,88 @@ using System.IO.Ports;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Threading;
 using System.Media;
+using System.Data.SqlClient;
+using System.Configuration;
 
 
 namespace Forms
 {
     public partial class MainForm : Form
     {
+        string conSoftSensConf = ConfigurationManager.ConnectionStrings["conSoftSensConf"].ConnectionString;
+
         bool autoMode = false;
-        bool rawMode = true;
         public bool configformactive = false;
-        int i = 0;
+
         int statusInt;
         string notificationText = "ALARM: DEVICE FAILURE!";
+
         int new_failure = 0;
 
         DateTime statusTimeStamp = DateTime.Now;
 
         List<string> datacollection = new List<string>();
-        List<int> analogReading = new List<int>();
+        List<string> sqlConfigResult = new List<string>();
+        List<int> analogReadingRaw = new List<int>();
+        List<double> analogReadingScaled = new List<double>();
         List<DateTime> timeStamp = new List<DateTime>();
         List<string> statusStrings = new List<string>();
         List<Color> statusColors = new List<Color>();
-        Instrument instr = new Instrument();
+        public Instrument instr = new Instrument();
+        
 
 
 
         public MainForm()
         {
             InitializeComponent();
-                serialPort1.DataReceived += new SerialDataReceivedEventHandler(DataRecievedHandler);
-                timer1.Interval = 2500;
-                timer1.Tick += new EventHandler(timer1_Tick);
+            instr.tagname = "LI0";
+            serialPort1.DataReceived += new SerialDataReceivedEventHandler(DataRecievedHandler);
+            timer1.Interval = 2500;
+            timer1.Tick += new EventHandler(timer1_Tick);
 
-
-                chartSeries.Series[0].XValueType = ChartValueType.DateTime;
-                chartSeries.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm:ss";
+            Thread.Sleep(2500);
+            timer2.Interval = 2500;
+            timer2.Tick += new EventHandler(timer2_tick);
+            timer2.Start();
+            chartSeries.Series[0].XValueType = ChartValueType.DateTime;
+            chartSeries.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm:ss";
         }
 
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            {
-                if (autoMode)
-                // try to send command to arduino
-                try
-                {
-                    if (i == 0)
-                    {
-                        if (this.rawMode)
-                        {
-                            i = 1;
-                            serialPort1.WriteLine("readraw");
-                        }
-                        if (this.rawMode == false)
-                        {
-                            i = 1;
-                            serialPort1.WriteLine("readscaled");
-                        }
-                    }
-                    else
-                    {
-                            serialPort1.WriteLine("readstatus");
-                            i = 0;
-                    }
-                }
-                catch(Exception)
-                {
-                        autoMode = false;
-                        MessageBox.Show("disconnected, stopping reading");
-                        EnterManualMode();
-                        textBoxCommunication.AppendText("disconnected" + "\r\n");
-                        toolStrip1.BackColor = Color.Gainsboro;
-
-                    }
-            }
+            try
+            { 
+              if (autoMode)
+              {
+              serialPort1.WriteLine("read");}
+              }
             
+            catch(Exception)
+            {
+              autoMode = false;
+              MessageBox.Show("disconnected, stopping reading");
+              EnterManualMode();
+              textBoxCommunication.AppendText("disconnected" + "\r\n");
+              toolStrip1.BackColor = Color.Gainsboro;
+            } 
+        }
+
+        private void timer2_tick(object sender, EventArgs e)
+        {
+            List<string> Task = new List<string>();
+            SqlConnection con = new SqlConnection(conSoftSensConf);
+            Task = SQLHelperClass.GetTaskFromDB(instr.tagname, con);
+            if (Task.Count == 0)
+            {
+            }
+            else
+            {
+                serialPort1.WriteLine("output;" + Task[1]);
+                textBoxCommunication.AppendText("Task Output:" + Task[1] + "   at: " + DateTime.Now.ToString() + "\r\n");
+                SQLHelperClass.CompleteTask(Task[0], DateTime.Now, con);
+            }
 
         }
 
@@ -94,7 +101,6 @@ namespace Forms
         {
 
             int iVab;
-            double iVab_double;
             string RecievedData = ((SerialPort)sender).ReadLine();
             textBoxCommunication.Invoke((MethodInvoker)delegate{ textBoxCommunication.AppendText(RecievedData + "\r\n"); });
             string[] separateParts= RecievedData.Split(';');
@@ -104,30 +110,7 @@ namespace Forms
             if (datatype == "readstatus")
             {
                 Int32.TryParse(separateParts[1], out statusInt);
-                StatusLabel1.Text = statusStrings[statusInt]; StatusLabel2.Text = statusStrings[statusInt];
-                statusStrip1.BackColor = statusColors[statusInt]; StatusStrip2.BackColor = statusColors[statusInt];
-
-                if (statusInt == 1 && new_failure == 0)
-                {
-                    
-                    notifyIcon1.Text = notificationText;
-                    notifyIcon1.BalloonTipText = "There is something wrong with your serial device (FAIL).";
-                    notifyIcon1.BalloonTipTitle = "WARNING";
-                    notifyIcon1.Icon = SystemIcons.Error;
-                    notifyIcon1.ShowBalloonTip(10000);
-                    new_failure = 1;
-                    if (autoMode)
-                    {
-                        EnterManualMode();
-                    }
-                }
-                else
-                {
-                    new_failure = 0;
-                }
-
-                statusTimeStamp = DateTime.Now;
-                textBoxStatus.AppendText(statusTimeStamp.ToString("dd/MM/yyyy HH:mm:ss") + "  " + statusStrings[statusInt] + "\r\n");
+                this.StatusCallback(statusInt);
 
             }
 
@@ -141,23 +124,24 @@ namespace Forms
                 if (separateParts[1] == "1\r")
                 {
                     MessageBox.Show("Upload successful");
+                    serialPort1.WriteLine("readconf");
+                    
                 } 
             }
 
             if (datatype == "readconf")
             {
+                instr.tagname = separateParts[1];
+
+                instr.lrv = double.Parse(separateParts[2]);
+                instr.urv = double.Parse(separateParts[3]);
                 try
                 {
-                    MessageBox.Show("successfully read device configuration");
                     ConfigForm.configformInstance.textBoxCurrentName.Text = separateParts[1]; 
                     ConfigForm.configformInstance.textBoxCurrentLRV.Text = separateParts[2];
                     ConfigForm.configformInstance.textBoxCurrentURV.Text = separateParts[3];
                     ConfigForm.configformInstance.textBoxCurrentAlarmL.Text = separateParts[4];
                     ConfigForm.configformInstance.textBoxCurrentAlarmH.Text = separateParts[5];
-
-                    instr.tagname = separateParts[1];
-                    instr.lrv = double.Parse(separateParts[2]);
-                    instr.urv = double.Parse(separateParts[3]);
                 }
                 catch
                 {
@@ -170,50 +154,76 @@ namespace Forms
             if (autoMode)   //if we are in auto-mode, we want to plot the readings
             {
                 DateTime dt = DateTime.Now;
-                
                 String timeStampstring = GetTimestamp(DateTime.Now);
 
-                //plotting raw readings
-                if (datatype == "readraw")
-
+                if (datatype == "read")
                 {
-                    ClearLiveReadings();
-                    textBoxRawLive.Text = separateParts[1];
+                    Int32.TryParse(separateParts[1], out statusInt);
+                    this.StatusCallback(statusInt);
+                    StatusLabel1.Text = statusStrings[statusInt]; StatusLabel2.Text = statusStrings[statusInt];
+                    statusStrip1.BackColor = statusColors[statusInt]; StatusStrip2.BackColor = statusColors[statusInt];
 
-                    iVab = int.Parse(separateParts[1]);
-                    datacollection.Add(timeStampstring + ", " + iVab+", ");
-                    analogReading.Add(iVab);
-                    timeStamp.Add(dt);
-                    //textBoxCommunication.AppendText(dt.ToString());
-                    textBoxAverage.Text = Math.Round(analogReading.Average(), 2).ToString();
-
-                    BeginInvoke(new Action(() =>
+                    if (statusInt == 1 && new_failure == 0)
                     {
-                        chartSeries.Series["Vba"].Points.DataBindXY(timeStamp, analogReading);
-                        chartSeries.Invalidate();
-                    }));
+                        notifyIcon1.Text = notificationText;
+                        notifyIcon1.BalloonTipText = "There is something wrong with your serial device (FAIL).";
+                        notifyIcon1.BalloonTipTitle = "WARNING";
+                        notifyIcon1.Icon = SystemIcons.Error;
+                        notifyIcon1.ShowBalloonTip(10000);
+                        new_failure = 1;
+                        if (autoMode)
+                        {
+                            EnterManualMode();
+                        }
+                    }
+                    else
+                    {
+                        new_failure = 0;
+                    }
+
+
+                    ////////////////////////////// plotting and recording raw and scaled
+
+                    ClearLiveReadings();
+                    textBoxRawLive.Text = separateParts[2];
+
+                    int iVab_raw = int.Parse(separateParts[2]);
+                    double iVab_scaled = double.Parse(separateParts[3]);
+
+                    datacollection.Add(timeStampstring + ", " + iVab_raw + ", " + iVab_scaled); analogReadingRaw.Add(iVab_raw);
+                    analogReadingScaled.Add(iVab_scaled); timeStamp.Add(dt);
+
+                    textBoxAverage.Text = Math.Round(analogReadingScaled.Average(), 2).ToString();
+                    textBoxScaledLive.Text = separateParts[3];
+
+
+                    if (radioButtonScaled.Checked)
+                    {
+                        BeginInvoke(new Action(() =>
+                        {
+                            chartSeries.Series["Vba"].Points.DataBindXY(timeStamp, analogReadingScaled);
+                            chartSeries.Invalidate();
+                        }));
+                    }
+                    else if (radioButtonRaw.Checked)
+                    {
+                        BeginInvoke(new Action(() =>
+                        {
+                            chartSeries.Series["Vba"].Points.DataBindXY(timeStamp, analogReadingRaw);
+                            chartSeries.Invalidate();
+                        }));
+                    }
+                    try
+                    {
+                        SqlConnection con = new SqlConnection(conSoftSensConf);
+                        SQLHelperClass.UploadDataPoint(instr.tagname, iVab_raw, iVab_scaled, statusInt, con);
+                    }
+                    catch (Exception error)
+                    {
+                        MessageBox.Show(error.Message);
+                    }
                 }
 
-                //plotting scaled readings
-                else if (datatype == "readscaled")
-                {
-                    ClearLiveReadings();
-                    textBoxScaledLive.Text = separateParts[1];
-
-                    iVab_double = double.Parse(separateParts[1]);
-                    datacollection.Add(timeStampstring + ", " + iVab_double + ", ");
-                    int iVab_scaled = Convert.ToInt32(iVab_double);
-                    analogReading.Add(iVab_scaled);
-                    timeStamp.Add(dt);
-                    textBoxAverage.Text = Math.Round(analogReading.Average(), 2).ToString();
-
-                    BeginInvoke(new Action(() =>
-                    {
-                        chartSeries.Series["Vba"].Points.DataBindXY(timeStamp, analogReading);
-                        chartSeries.Invalidate();
-                    }));
-
-                }
             }
         }
 
@@ -258,7 +268,7 @@ namespace Forms
                 textBoxCommunication.AppendText("Sent: " + textBoxSend.Text + "\r\n");
             }
             else
-            {
+            {   
                 textBoxCommunication.AppendText("no command sent, Port not connected" + "\r\n");
                 toolStrip1.BackColor = Color.Gainsboro;
                 toolStripLabel1.Text = "not connected";
@@ -276,12 +286,13 @@ namespace Forms
                 else
                 {
                     serialPort1.PortName = comboBoxCOM.Text;
+                    serialPort1.BaudRate = Int32.Parse(comboBoxBitRate.Text);
                     serialPort1.Open();
                     toolStripLabel1.Text = "connected";
                     toolStrip1.BackColor = Color.ForestGreen;
                     textBoxCommunication.AppendText("connected" + "\r\n");
                     MessageBox.Show("Connected to device");
-
+                    serialPort1.WriteLine("readconf");
                 }
             }
 
@@ -319,6 +330,7 @@ namespace Forms
 
         private void button1_Click_1(object sender, EventArgs e)
         {
+
             EnterAutoMode();
         }
 
@@ -350,6 +362,70 @@ namespace Forms
         // helper functions //
         //////////////////////
 
+        public void StatusCallback(int statusInt)
+        {
+            
+            StatusLabel1.Text = statusStrings[statusInt]; StatusLabel2.Text = statusStrings[statusInt];
+            statusStrip1.BackColor = statusColors[statusInt]; StatusStrip2.BackColor = statusColors[statusInt];
+
+            if (statusInt == 1 && new_failure == 0)
+            {
+
+                notifyIcon1.Text = notificationText;
+                notifyIcon1.BalloonTipText = "There is something wrong with your serial device (FAIL).";
+                notifyIcon1.BalloonTipTitle = "WARNING";
+                notifyIcon1.Icon = SystemIcons.Error;
+                notifyIcon1.ShowBalloonTip(10000);
+                new_failure = 1;
+                if (autoMode)
+                {
+                    EnterManualMode();
+                }
+            }
+            else
+            {
+                new_failure = 0;
+            }
+
+            statusTimeStamp = DateTime.Now;
+            textBoxStatus.AppendText(statusTimeStamp.ToString("dd/MM/yyyy HH:mm:ss") + "  " + statusStrings[statusInt] + "\r\n");
+        }
+        /*
+        public void GetConfigFromDB()
+        {
+            int i = 0;
+            
+            using (SqlConnection conn = new SqlConnection(conSoftSensConf))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT [TagName], [LRV], [URV], [AlarmL], [AlarmH] FROM [dbo].[Instrument] WHERE [TagName] = '" + instr.tagname + "'", conn);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                sqlConfigResult.Clear();
+                while (reader.Read())
+                {
+                    foreach (int n in Enumerable.Range(0, 5))
+                    { sqlConfigResult.Add(reader[n].ToString()); }
+                }
+                foreach (string s in sqlConfigResult)
+                {
+                    textBoxCommunication.AppendText(s + ", ");
+                }
+                try
+                {
+                    MessageBox.Show("successfully read device configuration");
+                    ConfigForm.configformInstance.textBoxCurrentName.Text = sqlConfigResult[0];
+                    ConfigForm.configformInstance.textBoxCurrentLRV.Text = sqlConfigResult[1];
+                    ConfigForm.configformInstance.textBoxCurrentURV.Text = sqlConfigResult[2];
+                    ConfigForm.configformInstance.textBoxCurrentAlarmL.Text = sqlConfigResult[3];
+                    ConfigForm.configformInstance.textBoxCurrentAlarmH.Text = sqlConfigResult[4];
+                }
+                catch
+                {
+
+                }
+            }
+        }*/
+
 
         public static String GetTimestamp(DateTime value)
         {
@@ -358,7 +434,8 @@ namespace Forms
 
         private void clearData()
         {
-            analogReading.Clear();
+            analogReadingRaw.Clear();
+            analogReadingScaled.Clear();
             timeStamp.Clear();
             datacollection.Clear();
             textBoxAverage.Clear();
@@ -428,7 +505,26 @@ namespace Forms
             {
                 textBoxSend.Text = "";
                 textBoxSend.ReadOnly = true;
-                timer1.Start();
+                if (textBoxFreq.Text == "")
+                {
+                    timer1.Interval = 2500;
+                    timer1.Start();
+
+                }
+                else
+                {
+                    int interval = int.Parse(textBoxFreq.Text);
+                    if (interval >= 2000)
+                    { 
+                        timer1.Interval = interval;
+                        timer1.Start();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please select a frequency greater than 2000ms");
+                    }
+                }
+
                 autoMode=true;
                 buttonConfigWindow.Enabled = false;
                 buttonSend.Enabled = false;
@@ -463,13 +559,16 @@ namespace Forms
             }
         }
 
+
+        //////////////////////
+        //////////////////////
         private void radioButtonRaw_Click(object sender, EventArgs e)
         {
-            this.rawMode = true;
+            //this.rawMode = true;
         }
         private void radioButtonScaled_Click(object sender, EventArgs e)
         {
-            this.rawMode = false;
+           //this.rawMode = false;
         }
 
         private void buttonStatus_Click(object sender, EventArgs e)
@@ -489,5 +588,31 @@ namespace Forms
         {
             textBoxCommunication.Clear();
         }
+
+        private void labelAverage_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBoxCOM_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonGetTask_Click(object sender, EventArgs e)
+        {
+            List<string> Task = new List<string>();
+            SqlConnection con = new SqlConnection(conSoftSensConf);
+            Task = SQLHelperClass.GetTaskFromDB(instr.tagname, con);
+            if (Task.Count == 0)
+            {
+                MessageBox.Show("could not find any tasks to complete");
+            }
+            else
+            {
+                textBoxDataID.Text = Task[0];
+                textBoxOutputValue.Text = Task[1];
+            }
+            }
     }
 }
